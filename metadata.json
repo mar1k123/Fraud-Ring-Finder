@@ -1,0 +1,6 @@
+{
+  "name": "Fraud Ring Finder",
+  "description": "Graph ML workbench and desktop-grade analytical application for detecting planted fraud rings in transaction networks using XGBoost, GraphSAGE, GAT, SHAP, and GNNExplainer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

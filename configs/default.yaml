@@ -1,0 +1,71 @@
+# Fraud Ring Finder — Master Configuration
+seed: 42
+
+generator:
+  num_accounts: 120
+  num_devices: 95
+  num_merchants: 30
+  num_transactions: 850
+  fraud_rate: 0.015  # Target ~1.5% fraudulent transactions/accounts (configurable 0.005 - 0.02)
+  time_span_hours: 168  # 7 days window
+  shift_mode: "none"    # Options: "none", "tactic_shift" (camouflaged burst & rotating devices post-split)
+  patterns:
+    money_mule_chains:
+      enabled: true
+      chain_length: 5
+      num_chains: 2
+      hop_delay_minutes: 12
+    shared_device_rings:
+      enabled: true
+      ring_size: 5
+      num_rings: 2
+    burst_activity:
+      enabled: true
+      num_burst_clusters: 2
+      tx_per_burst: 14
+      window_minutes: 15
+    circular_transfers:
+      enabled: true
+      cycle_length: 4
+      num_cycles: 2
+
+split:
+  strategy: "temporal"
+  train_ratio: 0.60
+  val_ratio: 0.20
+  test_ratio: 0.20
+  purge_gap_minutes: 0
+
+models:
+  xgboost_tabular:
+    max_depth: 5
+    learning_rate: 0.08
+    n_estimators: 200
+    scale_pos_weight: "auto"
+  xgboost_graph:
+    max_depth: 6
+    learning_rate: 0.06
+    n_estimators: 250
+    scale_pos_weight: "auto"
+  graphsage:
+    hidden_channels: 64
+    num_layers: 2
+    dropout: 0.25
+    lr: 0.003
+    epochs: 120
+    loss_type: "focal"
+    focal_alpha: 0.85
+    focal_gamma: 2.0
+  gat:
+    hidden_channels: 32
+    heads: 4
+    num_layers: 2
+    dropout: 0.30
+    lr: 0.002
+    epochs: 140
+    loss_type: "weighted_ce"
+    pos_weight: 25.0
+
+evaluation:
+  fixed_precision_target: 0.80
+  top_k_alerts: 25
